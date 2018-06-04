@@ -6,10 +6,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
+import java.util.UUID;
 
 public class DtoToDomainMapper {
 
-    public static Offer toOffer(CreateOfferRequestDto offer) {
+    public static Offer toOffer(CreateOfferRequestDto offer, UUID uuid) {
 
         return new Offer(offer.getFriendlyDescription(), toAmount(offer.getAmount()), parseDate(offer.getExpiryDate()));
     }

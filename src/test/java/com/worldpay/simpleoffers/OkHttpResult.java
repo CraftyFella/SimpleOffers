@@ -8,9 +8,11 @@ public class OkHttpResult implements HttpResult {
 
     private final String body;
     private final int status;
+    private final Response response;
 
     public OkHttpResult(Response response) throws IOException {
 
+        this.response = response;
         this.body = response.body().string();
         this.status = response.code();
     }
@@ -18,6 +20,11 @@ public class OkHttpResult implements HttpResult {
     @Override
     public int status() {
         return this.status;
+    }
+
+    @Override
+    public String header(String key) {
+        return response.header(key);
     }
 
     @Override

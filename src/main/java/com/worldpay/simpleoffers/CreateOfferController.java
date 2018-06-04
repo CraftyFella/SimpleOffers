@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import java.util.UUID;
+
+import static java.lang.String.format;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -22,9 +25,10 @@ public class CreateOfferController {
     public ResponseEntity<?> createOffer(
             @Valid @RequestBody CreateOfferRequestDto offer) {
 
-        store.add(DtoToDomainMapper.toOffer(offer));
+        UUID uuid = UUID.randomUUID();
+        store.add(DtoToDomainMapper.toOffer(offer, uuid));
 
-        return ok().build();
+        return ok().header("location", format("/offers/%s", uuid)) .build();
     }
 
 }

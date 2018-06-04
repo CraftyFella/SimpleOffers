@@ -32,6 +32,10 @@ public class SimpleOffersHttpClient {
         return new OkHttpResult(response);
     }
 
+    public HttpResult queryOffers() {
+        return null;
+    }
+
     private Request get(String resource) {
         String url = baseUrl + resource;
 
@@ -49,6 +53,8 @@ public class SimpleOffersHttpClient {
                 .post(RequestBody.create(JSON, body))
                 .url(url).build();
     }
+
+
 }
 
 

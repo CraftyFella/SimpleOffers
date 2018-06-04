@@ -11,12 +11,12 @@ import java.io.IOException;
 import static com.worldpay.simpleoffers.Amount.GBP;
 import static com.worldpay.simpleoffers.InMemoryOffersStore.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class HappyPath extends OffersContext {
-
 
     @BeforeClass
     public static void start() throws IOException {
@@ -36,6 +36,11 @@ public class HappyPath extends OffersContext {
     @Test
     public void api_returns_200_OK() {
         assertThat(create_offer_result.status(), is(equalTo(200)));
+    }
+
+    @Test
+    public void api_returns_location_for_created_offer() {
+        assertThat(create_offer_result.header("location"), startsWith("/offers/"));
     }
 
     @Test

@@ -1,19 +1,29 @@
 package com.worldpay.simpleoffers;
 
-import java.math.BigDecimal;
-import java.util.Currency;
+import javax.validation.constraints.NotNull;
 
 public class AmountDto {
 
-    public final String value;
+    @NotNull
+    private final String value;
 
-    public final String currency;
+    @NotNull
+    private final String currency;
 
     @java.beans.ConstructorProperties({"value", "currency"})
     public AmountDto(String value, String currency) {
         this.value = value;
         this.currency = currency;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
 
 }
 

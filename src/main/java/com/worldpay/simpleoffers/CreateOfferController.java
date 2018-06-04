@@ -1,16 +1,11 @@
 package com.worldpay.simpleoffers;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import javax.validation.Valid;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -25,7 +20,7 @@ public class CreateOfferController {
 
     @PostMapping("/offers")
     public ResponseEntity<?> createOffer(
-            @RequestBody CreateOfferRequestDto offer) {
+            @Valid @RequestBody CreateOfferRequestDto offer) {
 
         store.add(DtoToDomainMapper.toOffer(offer));
 

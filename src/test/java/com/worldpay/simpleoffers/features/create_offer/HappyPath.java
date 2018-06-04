@@ -1,9 +1,6 @@
 package com.worldpay.simpleoffers.features.create_offer;
 
-import com.worldpay.simpleoffers.HttpResult;
-import com.worldpay.simpleoffers.InMemoryOffersStore;
-import com.worldpay.simpleoffers.SimpleOffersAppplication;
-import com.worldpay.simpleoffers.SimpleOffersHttpClient;
+import com.worldpay.simpleoffers.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,7 +36,12 @@ public class HappyPath {
         tomorrow = tomorrow();
 
         result = new SimpleOffersHttpClient(8080)
-                .createOffer("Friendly desc", "10.50", "GBP", tomorrow);
+                .createOffer(
+                        new OfferBuilder()
+                                .withDesc("Friendly desc")
+                                .withAmount("10.50")
+                                .withCurrency("GBP")
+                                .withExpiry(tomorrow));
     }
 
     private static Date tomorrow() {

@@ -11,18 +11,28 @@ public class DtoToDomainMapper {
 
     public static Offer toOffer(CreateOfferRequestDto offer) {
 
-        return new Offer(offer.friendlyDescription, toAmount(offer.amount), parseDate(offer.expiryDate));
+        return new Offer(offer.getFriendlyDescription(), toAmount(offer.getAmount()), parseDate(offer.getExpiryDate()));
     }
 
     public static Amount toAmount(AmountDto amount) {
-        return new Amount(new BigDecimal(amount.value), Currency.getInstance(amount.currency));
+        return new Amount(new BigDecimal(amount.getValue()), parseCurrency(amount));
+    }
+
+    private static Currency parseCurrency(AmountDto amount) {
+        return Currency.getInstance(amount.getCurrency());
     }
 
     private static Date parseDate(String dateString){
         try {
             SimpleDateFormat format =
                     new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            return format.parse(dateString);
+
+            Date date = format.parse(dateString);
+
+            if (date.before(new Date())){
+                throw new IllegalArgumentException("Date must be in the future");
+            }
+            return date;
         }
         catch(ParseException pe) {
             throw new IllegalArgumentException(pe);

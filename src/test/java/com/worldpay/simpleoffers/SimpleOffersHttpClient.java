@@ -25,19 +25,9 @@ public class SimpleOffersHttpClient {
         return new OkHttpResult(response);
     }
 
-    public HttpResult createOffer(String desc, String amountValue, String amountCurrency, Date expiry) throws IOException {
+    public HttpResult createOffer(OfferBuilder builder) throws IOException {
 
-        JSONObject amountJson = new JSONObject()
-                .put("value", amountValue)
-                .put("currency", amountCurrency);
-
-        JSONObject body = new JSONObject()
-                .put("amount", amountJson)
-                .put("friendlyDescription", desc)
-                .put("expiryDate", expiry.toString())
-                ;
-
-        Request request = post("/offers", body.toString());
+        Request request = post("/offers", builder.build().toString());
         Response response = client.newCall(request).execute();
         return new OkHttpResult(response);
     }

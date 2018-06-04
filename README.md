@@ -46,3 +46,14 @@ Linux:
     
 #### response
     status 200
+
+## Limitations
+
+I ran out of time to start the links (HATEOS) work as you can see from the commit stamps.
+As this mentions enterprise... I wouldnt normally create an api without metrics and tracing.
+
+Also before adding the metrics etc.. I would start to move some of the logic in the controllers (which are simple enough at the momenet).
+
+Do please ask me any questions if you have some... very happy to talk you through this.
+
+Dave

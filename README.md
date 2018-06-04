@@ -18,6 +18,8 @@ Linux:
     
 ## Test
 
+The solution makes use of end to end tests. (my prefered approach) however if you want to test manaully here is a few curl commands you can run:
+
 ### create an offer
 
     curl -X POST \

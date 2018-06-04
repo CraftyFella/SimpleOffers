@@ -4,6 +4,7 @@ import okhttp3.*;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class SimpleOffersHttpClient {
 
@@ -24,8 +25,18 @@ public class SimpleOffersHttpClient {
         return new OkHttpResult(response);
     }
 
-    public HttpResult createOffer(String friendlyDescription) throws IOException {
-        JSONObject body = new JSONObject().put("friendly-description", friendlyDescription);
+    public HttpResult createOffer(String desc, String amountValue, String amountCurrency, Date expiry) throws IOException {
+
+        JSONObject amountJson = new JSONObject()
+                .put("value", amountValue)
+                .put("currency", amountCurrency);
+
+        JSONObject body = new JSONObject()
+                .put("amount", amountJson)
+                .put("friendlyDescription", desc)
+                .put("expiryDate", expiry.toString())
+                ;
+
         Request request = post("/offers", body.toString());
         Response response = client.newCall(request).execute();
         return new OkHttpResult(response);

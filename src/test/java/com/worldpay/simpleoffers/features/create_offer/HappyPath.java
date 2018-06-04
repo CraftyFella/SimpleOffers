@@ -1,32 +1,56 @@
 package com.worldpay.simpleoffers.features.create_offer;
 
 import com.worldpay.simpleoffers.HttpResult;
+import com.worldpay.simpleoffers.InMemoryOffersStore;
 import com.worldpay.simpleoffers.SimpleOffersAppplication;
 import com.worldpay.simpleoffers.SimpleOffersHttpClient;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static com.worldpay.simpleoffers.Amount.GBP;
+import static com.worldpay.simpleoffers.InMemoryOffersStore.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.core.IsEqual.equalTo;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {SimpleOffersAppplication.class})
 public class HappyPath {
 
-    @LocalServerPort
-    private int port;
-    private HttpResult result;
+    private static ConfigurableApplicationContext app;
+    private static HttpResult result;
 
-    @Before
-    public void beforeEach() throws IOException {
-        result = new SimpleOffersHttpClient(port).createOffer("Friendly desc");
+    @Autowired
+    private static InMemoryOffersStore store;
+    private static Date tomorrow;
+
+    @BeforeClass
+    public static void startApp() throws IOException {
+        app = SpringApplication.run(SimpleOffersAppplication.class,"--server.port=" + "8080");
+        store = (InMemoryOffersStore)app.getBean("offersStore");
+
+        tomorrow = tomorrow();
+
+        result = new SimpleOffersHttpClient(8080)
+                .createOffer("Friendly desc", "10.50", "GBP", tomorrow);
+    }
+
+    private static Date tomorrow() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        return calendar.getTime();
+    }
+
+    @AfterClass
+    public static void stop() {
+        app.close();
     }
 
     @Test
@@ -34,4 +58,22 @@ public class HappyPath {
         assertThat(result.status(), is(equalTo(200)));
     }
 
+    @Test
+    public void db_contains_offer_with_matching_description() {
+        assertThat(store.offers, contains(anOffer(withFriendlyDescription("Friendly desc"))));
+    }
+
+    @Test
+    public void db_contains_offer_with_matching_amount() {
+        assertThat(store.offers, contains(anOffer(
+                withValue("10.50"),
+                withCurrency(GBP))));
+    }
+
+    @Test
+    public void db_contains_offer_with_matching_expiry() {
+        assertThat(store.offers, contains(anOffer(withExpiryDate(tomorrow))));
+    }
+
 }
+

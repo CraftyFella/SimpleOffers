@@ -1,5 +1,8 @@
-package com.worldpay.simpleoffers;
+package com.worldpay.simpleoffers.features.welcome;
 
+import com.worldpay.simpleoffers.HttpResult;
+import com.worldpay.simpleoffers.SimpleOffersAppplication;
+import com.worldpay.simpleoffers.SimpleOffersHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,32 +16,26 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {SimpleOffersAppplication.class})
-public class WelcomeTests {
-
+public class HappyPath {
     @LocalServerPort
     private int port;
-
-    private SimpleOffersHttpClient client;
+    private HttpResult result;
 
     @Before
-    public void setup() {
-        client = new SimpleOffersHttpClient(port);
+    public void beforeEach() throws IOException {
+        result = new SimpleOffersHttpClient(port).welcome();
     }
 
     @Test
-    public void returns_welcome_message() throws IOException {
-        HttpResult result = client.welcome();
-        assertThat(result.body(), is(equalTo("Welcome to simple offers :-)")));
-    }
-
-    @Test
-    public void returns_ok() throws IOException {
-        HttpResult result = client.welcome();
+    public void api_returns_200_OK() {
         assertThat(result.status(), is(equalTo(200)));
     }
 
-}
+    @Test
+    public void api_returns_welcome_message() {
+        assertThat(result.body(), is(equalTo("Welcome to simple offers :-)")));
+    }
 
+}

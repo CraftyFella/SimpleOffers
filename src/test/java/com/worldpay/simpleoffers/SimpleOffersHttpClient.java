@@ -32,6 +32,10 @@ public class SimpleOffersHttpClient {
                 .get()
                 .url(url).build();
     }
+
+    public HttpResult createOffer(String friendlyDescription) {
+        return null;
+    }
 }
 
 

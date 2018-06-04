@@ -2,6 +2,7 @@ package com.worldpay.simpleoffers;
 
 import org.json.JSONObject;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class OfferBuilder {
@@ -9,7 +10,7 @@ public class OfferBuilder {
     private String amountValue = "12.34";
     private String amountCurrency = "GBP";
     private String desc = "Desc";
-    private Date expiry = new Date();
+    private ZonedDateTime expiry = ZonedDateTime.now().plusDays(1);
 
     public JSONObject build() {
 
@@ -39,7 +40,7 @@ public class OfferBuilder {
         return this;
     }
 
-    public OfferBuilder withExpiry(Date expiry) {
+    public OfferBuilder withExpiry(ZonedDateTime expiry) {
         this.expiry = expiry;
         return this;
     }

@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -21,8 +22,7 @@ public class OffersContext {
     @Autowired
     protected InMemoryOffersStore store;
     protected SimpleOffersHttpClient client;
-    private Date tomorrow;
-    ;
+    private ZonedDateTime tomorrow;
 
     public OffersContext() {
         start_application();
@@ -34,12 +34,12 @@ public class OffersContext {
         store = (InMemoryOffersStore)app.getBean("offersStore");
     }
 
-    protected Date tomorrow() {
+    protected ZonedDateTime tomorrow() {
         if (tomorrow != null) return tomorrow;
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        tomorrow = calendar.getTime();
-        return tomorrow;
+
+        ZonedDateTime date = ZonedDateTime.now().plusDays(1);
+        tomorrow = date;
+        return date;
     }
 
     protected void create_offer() throws IOException {

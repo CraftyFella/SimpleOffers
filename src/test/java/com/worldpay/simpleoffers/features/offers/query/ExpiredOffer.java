@@ -6,9 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,12 +28,8 @@ public class ExpiredOffer extends OffersContext {
         Thread.sleep(1100L); // TODO: Replace with mocked clock if I had more time
     }
 
-    private Date in_one_second() {
-        if (in_one_second != null) return in_one_second;
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, 1);
-        in_one_second = calendar.getTime();
-        return in_one_second;
+    private ZonedDateTime in_one_second() {
+        return ZonedDateTime.now().plusSeconds(1);
     }
 
     @Test

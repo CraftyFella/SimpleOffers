@@ -1,17 +1,24 @@
 package com.worldpay.simpleoffers;
 
-import com.worldpay.simpleoffers.query.OfferByOfferId;
-import com.worldpay.simpleoffers.query.OfferResponseDto;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 
-import java.util.*;
+import java.time.ZonedDateTime;
+import java.util.Currency;
+import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
-    public Map<UUID, Offer> offers = new HashMap<>();
+public class InMemoryOffersStore implements OffersStore {
+
+    public Map<UUID, Offer> offers;
+
+    public InMemoryOffersStore(Map<UUID, Offer> offers) {
+        this.offers = offers;
+    }
 
     @Override
     public void add(Offer offer) {
@@ -21,11 +28,6 @@ public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
     @Override
     public void expire(UUID offerId) {
         offers.computeIfPresent(offerId, (uuid, offer) -> offer.expire());
-    }
-
-    @Override
-    public Optional<Offer> get(UUID offerId) {
-        return Optional.ofNullable(offers.getOrDefault(offerId, null));
     }
 
     public static Matcher<InMemoryOffersStore> contains(Matcher<Offer> matcher) {
@@ -75,7 +77,7 @@ public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
         };
     }
 
-    public static Matcher<Offer> withExpiryDate(Date date) {
+    public static Matcher<Offer> withExpiryDate(ZonedDateTime date) {
         return new FeatureMatcher<Offer, String>(equalTo(date.toString()),
                 "offer with expiry date of ", "date") {
             protected String  featureValueOf(Offer actual) {

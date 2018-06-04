@@ -1,7 +1,6 @@
 package com.worldpay.simpleoffers;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class Offer {
@@ -9,9 +8,9 @@ public class Offer {
     public final UUID offerId;
     public final String friendlyDescription;
     public final Amount amount;
-    private Date expiryDate;
+    private ZonedDateTime expiryDate;
 
-    public Offer(UUID offerId, String friendlyDescription, Amount amount, Date expiryDate) {
+    public Offer(UUID offerId, String friendlyDescription, Amount amount, ZonedDateTime expiryDate) {
         this.offerId = offerId;
         this.friendlyDescription = friendlyDescription;
         this.amount = amount;
@@ -19,10 +18,10 @@ public class Offer {
     }
 
     public boolean isStillValid() {
-        return new Date().before(expiryDate);
+        return ZonedDateTime.now().isBefore(expiryDate);
     }
 
-    public Date getExpiryDate(){
+    public ZonedDateTime getExpiryDate(){
         return expiryDate;
     }
 
@@ -31,10 +30,8 @@ public class Offer {
         return this;
     }
 
-    private Date one_year_ago() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -1);
-        return calendar.getTime();
+    private ZonedDateTime one_year_ago() {
+        return ZonedDateTime.now().minusYears(1);
     }
 }
 

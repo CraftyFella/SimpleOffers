@@ -5,6 +5,7 @@ import com.worldpay.simpleoffers.features.offers.OffersContext;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -43,10 +44,8 @@ public class InvalidRequests extends OffersContext {
         assertThat(client.createOffer(request).status(), equalTo(400));
     }
 
-    private static Date yesterday() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, -1);
-        return calendar.getTime();
+    private static ZonedDateTime yesterday() {
+        return ZonedDateTime.now().minusDays(1);
     }
 }
 

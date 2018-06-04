@@ -22,8 +22,14 @@ public class CancelOfferController {
     @DeleteMapping("/offers/{offerId}")
     public ResponseEntity<?> queryOffer(
             @PathVariable UUID offerId) {
-        offersStore.expire(offerId);
+
+        handle(offerId);
+
         return ok().build();
+    }
+
+    private void handle(@PathVariable UUID offerId) {
+        offersStore.expire(offerId);
     }
 
 }

@@ -25,10 +25,15 @@ public class CreateOfferController {
     public ResponseEntity<?> createOffer(
             @Valid @RequestBody OfferRequestDto offer) {
 
-        UUID offerId = UUID.randomUUID();
-        store.add(DtoToDomainMapper.toOffer(offer, offerId));
+        UUID offerId = handle(offer);
 
         return ok().header("location", format("/offers/%s", offerId)) .build();
+    }
+
+    private UUID handle(@Valid @RequestBody OfferRequestDto offer) {
+        UUID offerId = UUID.randomUUID();
+        store.add(DtoToDomainMapper.toOffer(offer, offerId));
+        return offerId;
     }
 
 }

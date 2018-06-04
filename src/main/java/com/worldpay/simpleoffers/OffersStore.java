@@ -4,6 +4,5 @@ import java.util.UUID;
 
 public interface OffersStore {
     void add(Offer offer);
-
-    void delete(UUID offerId);
+    void expire(UUID offerId);
 }

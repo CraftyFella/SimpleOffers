@@ -32,5 +32,4 @@ public class OfferResponseDto {
     public String getExpiryDate() {
         return expiryDate;
     }
-
 }

@@ -17,12 +17,12 @@ public class CancelledOffer extends OffersContext {
     public void start() throws IOException {
         create_offer();
         cancel_offer(last_offer_id());
-        query_offer(UUID.randomUUID());
+        query_offer(last_offer_id());
     }
 
     @Test
-    public void api_returns_404() {
-        assertThat(last_query_offers_result.status(), is(equalTo(404)));
+    public void api_returns_410_Gone() {
+        assertThat(last_query_offers_result.status(), is(equalTo(410)));
     }
 }
 

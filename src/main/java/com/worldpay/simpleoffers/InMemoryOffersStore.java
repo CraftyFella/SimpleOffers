@@ -11,22 +11,30 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
-    public List<Offer> offers = new ArrayList<>();
+    public Map<UUID, Offer> offers = new HashMap<>();
 
     @Override
     public void add(Offer offer) {
-        offers.add(offer);
+        offers.putIfAbsent(offer.offerId, offer);
     }
 
     @Override
-    public void delete(UUID offerId) {
-        offers.removeIf(o -> offerId.equals(o.offerId));
+    public void expire(UUID offerId) {
+        offers.computeIfPresent(offerId, (uuid, offer) -> offer.expire());
     }
 
     @Override
-    public Optional<OfferResponseDto> get(UUID offerId) {
-        return offers.stream().filter(o -> offerId.equals(o.offerId)).findFirst()
-                .map(DomainToDtoMapper::toOffer);
+    public Optional<Offer> get(UUID offerId) {
+        return Optional.ofNullable(offers.getOrDefault(offerId, null));
+    }
+
+    public static Matcher<InMemoryOffersStore> contains(Matcher<Offer> matcher) {
+        return new FeatureMatcher<InMemoryOffersStore, Iterable<Offer>>(org.hamcrest.Matchers.contains(matcher),
+                "In Memory Offers Store contains ", "offer") {
+            protected Iterable<Offer> featureValueOf(InMemoryOffersStore actual) {
+                return actual.offers.values();
+            }
+        };
     }
 
     public static Matcher<Offer> withOfferId(UUID offerId) {
@@ -38,6 +46,7 @@ public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
             }
         };
     }
+
     public static Matcher<Offer> withFriendlyDescription(String friendlyDesc) {
 
         return new FeatureMatcher<Offer, String>(equalTo(friendlyDesc),
@@ -70,7 +79,7 @@ public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
         return new FeatureMatcher<Offer, String>(equalTo(date.toString()),
                 "offer with expiry date of ", "date") {
             protected String  featureValueOf(Offer actual) {
-                return actual.expiryDate.toString();
+                return actual.getExpiryDate().toString();
             }
         };
     }

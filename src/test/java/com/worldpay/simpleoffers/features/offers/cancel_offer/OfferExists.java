@@ -30,10 +30,5 @@ public class OfferExists extends OffersContext {
         assertThat(last_cancel_offers_result.status(), is(equalTo(200)));
     }
 
-    @Test
-    public void db_has_no_matching_offer() {
-        assertThat(store.offers, not(contains(anOffer(withOfferId(last_offer_id())))));
-    }
-
 }
 

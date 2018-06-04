@@ -11,7 +11,6 @@ import static com.worldpay.simpleoffers.InMemoryOffersStore.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class HappyPath extends OffersContext {
@@ -36,24 +35,24 @@ public class HappyPath extends OffersContext {
 
     @Test
     public void db_contains_offer_with_matching_offerId() {
-        assertThat(store.offers, contains(anOffer(withOfferId(last_offer_id()))));
+        assertThat(store, contains(anOffer(withOfferId(last_offer_id()))));
     }
 
     @Test
     public void db_contains_offer_with_matching_description() {
-        assertThat(store.offers, contains(anOffer(withFriendlyDescription("Friendly desc"))));
+        assertThat(store, contains(anOffer(withFriendlyDescription("Friendly desc"))));
     }
 
     @Test
     public void db_contains_offer_with_matching_amount() {
-        assertThat(store.offers, contains(anOffer(
+        assertThat(store, contains(anOffer(
                 withValue("10.50"),
                 withCurrency(GBP))));
     }
 
     @Test
     public void db_contains_offer_with_matching_expiry() {
-        assertThat(store.offers, contains(anOffer(withExpiryDate(tomorrow()))));
+        assertThat(store, contains(anOffer(withExpiryDate(tomorrow()))));
     }
 
 }

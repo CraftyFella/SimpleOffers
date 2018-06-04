@@ -1,15 +1,13 @@
-package com.worldpay.simpleoffers.features.create_offer;
+package com.worldpay.simpleoffers.features.offers.create;
 
-import com.worldpay.simpleoffers.*;
+import com.worldpay.simpleoffers.HttpResult;
+import com.worldpay.simpleoffers.OfferBuilder;
+import com.worldpay.simpleoffers.features.offers.OffersContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 
 import static com.worldpay.simpleoffers.Amount.GBP;
@@ -19,24 +17,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class HappyPath {
+public class HappyPath extends OffersContext {
 
-    private static ConfigurableApplicationContext app;
     private static HttpResult result;
-
-    @Autowired
-    private static InMemoryOffersStore store;
     private static Date tomorrow;
 
     @BeforeClass
-    public static void startApp() throws IOException {
-        app = SpringApplication.run(SimpleOffersAppplication.class,"--server.port=" + "8080");
-        store = (InMemoryOffersStore)app.getBean("offersStore");
-
+    public static void start() throws IOException {
+        start_application();
         tomorrow = tomorrow();
 
-        result = new SimpleOffersHttpClient(8080)
-                .createOffer(
+        result = client.createOffer(
                         new OfferBuilder()
                                 .withDesc("Friendly desc")
                                 .withAmount("10.50")
@@ -44,15 +35,9 @@ public class HappyPath {
                                 .withExpiry(tomorrow));
     }
 
-    private static Date tomorrow() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        return calendar.getTime();
-    }
-
     @AfterClass
     public static void stop() {
-        app.close();
+        stop_application();
     }
 
     @Test

@@ -1,46 +1,31 @@
-package com.worldpay.simpleoffers.features.create_offer;
+package com.worldpay.simpleoffers.features.offers.create;
 
-import com.worldpay.simpleoffers.InMemoryOffersStore;
 import com.worldpay.simpleoffers.OfferBuilder;
-import com.worldpay.simpleoffers.SimpleOffersAppplication;
-import com.worldpay.simpleoffers.SimpleOffersHttpClient;
+import com.worldpay.simpleoffers.features.offers.OffersContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.worldpay.simpleoffers.Amount.GBP;
-import static com.worldpay.simpleoffers.InMemoryOffersStore.*;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class InvalidRequests {
+public class InvalidRequests extends OffersContext {
 
     private static ConfigurableApplicationContext app;
-    
-    @Autowired
-    private static InMemoryOffersStore store;
-    private static SimpleOffersHttpClient client;
 
     @BeforeClass
-    public static void startApp() {
-        app = SpringApplication.run(SimpleOffersAppplication.class,"--server.port=" + "8080");
-        store = (InMemoryOffersStore)app.getBean("offersStore");
-        
-        client = new SimpleOffersHttpClient(8080);
+    public static void start() throws IOException {
+        start_application();
     }
 
     @AfterClass
     public static void stop() {
-        app.close();
+        stop_application();
     }
 
     @Test

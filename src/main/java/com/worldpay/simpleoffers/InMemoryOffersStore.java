@@ -1,5 +1,7 @@
 package com.worldpay.simpleoffers;
 
+import com.worldpay.simpleoffers.query.OfferByOfferId;
+import com.worldpay.simpleoffers.query.OfferResponseDto;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 
@@ -16,6 +18,26 @@ public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
         offers.add(offer);
     }
 
+    @Override
+    public void delete(UUID offerId) {
+        offers.removeIf(o -> offerId.equals(o.offerId));
+    }
+
+    @Override
+    public Optional<OfferResponseDto> get(UUID offerId) {
+        return offers.stream().filter(o -> offerId.equals(o.offerId)).findFirst()
+                .map(DomainToDtoMapper::toOffer);
+    }
+
+    public static Matcher<Offer> withOfferId(UUID offerId) {
+
+        return new FeatureMatcher<Offer, UUID>(equalTo(offerId),
+                "offer with offer id of ", "offerId") {
+            protected UUID featureValueOf(Offer actual) {
+                return actual.offerId;
+            }
+        };
+    }
     public static Matcher<Offer> withFriendlyDescription(String friendlyDesc) {
 
         return new FeatureMatcher<Offer, String>(equalTo(friendlyDesc),
@@ -57,9 +79,5 @@ public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
         return allOf(matchers);
     }
 
-    @Override
-    public Optional<OfferResponseDto> get(UUID offerId) {
-        return offers.stream().filter(o -> offerId.equals(o.offerId)).findFirst()
-                .map(DomainToDtoMapper::toOffer);
-    }
+
 }

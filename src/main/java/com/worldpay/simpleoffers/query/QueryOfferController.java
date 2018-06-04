@@ -1,4 +1,4 @@
-package com.worldpay.simpleoffers;
+package com.worldpay.simpleoffers.query;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

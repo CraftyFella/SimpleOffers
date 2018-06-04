@@ -1,22 +1,24 @@
-package com.worldpay.simpleoffers;
+package com.worldpay.simpleoffers.create;
 
-public class OfferResponseDto {
+import com.worldpay.simpleoffers.AmountDto;
 
-    private final String offerId;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+public class OfferRequestDto {
+
+    @NotNull
     private final String friendlyDescription;
+    @Valid
     private final AmountDto amount;
+    @NotNull
     private final String expiryDate;
 
-    @java.beans.ConstructorProperties({"offerId", "friendlyDescription", "amount", "expiryDate"})
-    public OfferResponseDto(String offerId, String friendlyDescription, AmountDto amount, String expiryDate) {
-        this.offerId = offerId;
+    @java.beans.ConstructorProperties({"friendlyDescription", "amount", "expiryDate"})
+    public OfferRequestDto(String friendlyDescription, AmountDto amount, String expiryDate) {
         this.friendlyDescription = friendlyDescription;
         this.amount = amount;
         this.expiryDate = expiryDate;
-    }
-
-    public String getOfferId() {
-        return offerId;
     }
 
     public String getFriendlyDescription() {
@@ -30,5 +32,4 @@ public class OfferResponseDto {
     public String getExpiryDate() {
         return expiryDate;
     }
-
 }

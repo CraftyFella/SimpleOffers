@@ -1,5 +1,7 @@
 package com.worldpay.simpleoffers;
 
+import com.worldpay.simpleoffers.create.OfferRequestDto;
+
 import java.math.BigDecimal;
 
 import java.text.ParseException;

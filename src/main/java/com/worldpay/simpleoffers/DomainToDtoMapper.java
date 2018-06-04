@@ -1,5 +1,7 @@
 package com.worldpay.simpleoffers;
 
+import com.worldpay.simpleoffers.query.OfferResponseDto;
+
 public class DomainToDtoMapper {
 
     public static OfferResponseDto toOffer(Offer offer) {

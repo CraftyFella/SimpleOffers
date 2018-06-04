@@ -35,6 +35,11 @@ public class HappyPath extends OffersContext {
     }
 
     @Test
+    public void db_contains_offer_with_matching_offerId() {
+        assertThat(store.offers, contains(anOffer(withOfferId(last_offer_id()))));
+    }
+
+    @Test
     public void db_contains_offer_with_matching_description() {
         assertThat(store.offers, contains(anOffer(withFriendlyDescription("Friendly desc"))));
     }

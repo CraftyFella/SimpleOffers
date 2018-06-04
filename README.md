@@ -6,7 +6,7 @@
   
 ## Build (Gradle)
 
-the project makes use of gradle. YOu can build it from the command line using the following:
+the project makes use of gradle. You can build it from the command line using the following:
 
 Linux:
 
@@ -54,7 +54,7 @@ The solution makes use of end to end tests. (my prefered approach) however if yo
 I ran out of time to start the links (HATEOS) work as you can see from the commit stamps.
 As this mentions enterprise... I wouldnt normally create an api without metrics and tracing.
 
-Also before adding the metrics etc.. I would start to move some of the logic in the controllers (which are simple enough at the momenet).
+Also before adding the metrics etc.. I would start to move some of the logic in the controllers (which are simple enough at the momenet) out into handlers.
 
 Do please ask me any questions if you have some... very happy to talk you through this.
 

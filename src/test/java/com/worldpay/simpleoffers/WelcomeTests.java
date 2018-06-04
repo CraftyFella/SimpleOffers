@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {SimpleOffersAppplication.class})
-public class RootControllerTest {
+public class WelcomeTests {
 
     @LocalServerPort
     private int port;
@@ -30,13 +30,13 @@ public class RootControllerTest {
 
     @Test
     public void returns_welcome_message() throws IOException {
-        HttpResult result = client.root();
+        HttpResult result = client.welcome();
         assertThat(result.body(), is(equalTo("Welcome to simple offers :-)")));
     }
 
     @Test
     public void returns_ok() throws IOException {
-        HttpResult result = client.root();
+        HttpResult result = client.welcome();
         assertThat(result.status(), is(equalTo(200)));
     }
 

@@ -18,7 +18,7 @@ public class SimpleOffersHttpClient {
                 .build();
     }
 
-    public HttpResult root() throws IOException {
+    public HttpResult welcome() throws IOException {
         Request request = get("/");
         Response response = client.newCall(request).execute();
         return new OkHttpResult(response);

@@ -3,16 +3,12 @@ package com.worldpay.simpleoffers;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class InMemoryOffersStore implements OffersStore {
+public class InMemoryOffersStore implements OffersStore, OfferByOfferId {
     public List<Offer> offers = new ArrayList<>();
 
     @Override
@@ -61,4 +57,9 @@ public class InMemoryOffersStore implements OffersStore {
         return allOf(matchers);
     }
 
+    @Override
+    public Optional<OfferResponseDto> get(UUID offerId) {
+        return offers.stream().filter(o -> offerId.equals(o.offerId)).findFirst()
+                .map(DomainToDtoMapper::toOffer);
+    }
 }

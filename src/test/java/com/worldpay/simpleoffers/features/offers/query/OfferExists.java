@@ -6,15 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
-import static com.worldpay.simpleoffers.Amount.GBP;
-import static com.worldpay.simpleoffers.InMemoryOffersStore.*;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class OfferExists extends OffersContext {
@@ -39,6 +34,21 @@ public class OfferExists extends OffersContext {
     @Test
     public void api_returns_body_with_description() {
         assertThat(last_query_offers_result.body(), hasJsonPath("$.friendlyDescription", equalTo("Desc")));
+    }
+
+    @Test
+    public void api_returns_body_with_amount() {
+        assertThat(last_query_offers_result.body(), hasJsonPath("$.amount.value", equalTo("12.34")));
+    }
+
+    @Test
+    public void api_returns_body_with_currency() {
+        assertThat(last_query_offers_result.body(), hasJsonPath("$.amount.currency", equalTo("GBP")));
+    }
+
+    @Test
+    public void api_returns_body_with_expiry() {
+        assertThat(last_query_offers_result.body(), hasJsonPath("$.expiryDate", equalTo(tomorrow().toString())));
     }
 
 }

@@ -1,9 +1,7 @@
 package com.worldpay.simpleoffers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,12 +21,13 @@ public class CreateOfferController {
 
     @PostMapping("/offers")
     public ResponseEntity<?> createOffer(
-            @Valid @RequestBody CreateOfferRequestDto offer) {
+            @Valid @RequestBody OfferRequestDto offer) {
 
-        UUID uuid = UUID.randomUUID();
-        store.add(DtoToDomainMapper.toOffer(offer, uuid));
+        UUID offerId = UUID.randomUUID();
+        store.add(DtoToDomainMapper.toOffer(offer, offerId));
 
-        return ok().header("location", format("/offers/%s", uuid)) .build();
+        return ok().header("location", format("/offers/%s", offerId)) .build();
     }
 
 }
+

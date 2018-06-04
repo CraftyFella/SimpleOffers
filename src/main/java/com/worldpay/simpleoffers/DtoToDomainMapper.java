@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public class DtoToDomainMapper {
 
-    public static Offer toOffer(CreateOfferRequestDto offer, UUID uuid) {
+    public static Offer toOffer(OfferRequestDto offer, UUID offerId) {
 
-        return new Offer(offer.getFriendlyDescription(), toAmount(offer.getAmount()), parseDate(offer.getExpiryDate()));
+        return new Offer(offerId, offer.getFriendlyDescription(), toAmount(offer.getAmount()), parseDate(offer.getExpiryDate()));
     }
 
     public static Amount toAmount(AmountDto amount) {
@@ -40,3 +40,4 @@ public class DtoToDomainMapper {
         }
     }
 }
+

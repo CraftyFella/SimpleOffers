@@ -20,12 +20,6 @@ public class OfferExists extends OffersContext {
         query_offer(last_offer_id());
     }
 
-
-    @After
-    public void stop() {
-        stop_application();
-    }
-
     @Test
     public void api_returns_200_OK() {
         assertThat(last_query_offers_result.status(), is(equalTo(200)));

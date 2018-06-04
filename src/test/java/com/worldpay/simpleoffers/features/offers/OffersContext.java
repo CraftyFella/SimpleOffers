@@ -16,11 +16,13 @@ public class OffersContext {
     protected ConfigurableApplicationContext app;
     protected HttpResult last_create_offer_result;
     protected HttpResult last_query_offers_result;
+    protected HttpResult last_cancel_offers_result;
 
     @Autowired
     protected InMemoryOffersStore store;
     protected SimpleOffersHttpClient client;
     private Date tomorrow;
+    ;
 
     public OffersContext() {
         start_application();
@@ -50,6 +52,10 @@ public class OffersContext {
 
     protected void query_offer(UUID offerId) throws IOException {
         last_query_offers_result = client.queryOffer(offerId);
+    }
+
+    protected void cancel_offer(UUID offerId) throws IOException {
+        last_cancel_offers_result = client.cancelOffer(offerId);
     }
 
     protected UUID last_offer_id() {

@@ -39,12 +39,27 @@ public class SimpleOffersHttpClient {
         return new OkHttpResult(response);
     }
 
+    public HttpResult cancelOffer(UUID offerId) throws IOException {
+        Request request = delete("/offers/" + offerId);
+        Response response = client.newCall(request).execute();
+        return new OkHttpResult(response);
+    }
+
     private Request get(String resource) {
         String url = baseUrl + resource;
 
         return new Request
                 .Builder()
                 .get()
+                .url(url).build();
+    }
+
+    private Request delete(String resource) {
+        String url = baseUrl + resource;
+
+        return new Request
+                .Builder()
+                .delete()
                 .url(url).build();
     }
 

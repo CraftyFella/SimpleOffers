@@ -42,4 +42,5 @@ dependencies {
     testCompile("junit:junit:4.12")
     testCompile("com.squareup.okhttp3:okhttp:3.10.0")
     testCompile("org.json:json:20171018")
+    testCompile("com.jayway.jsonpath:json-path-assert:2.2.0")
 }

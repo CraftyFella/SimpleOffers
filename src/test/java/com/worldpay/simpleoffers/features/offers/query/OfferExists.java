@@ -6,7 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.UUID;
 
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static com.worldpay.simpleoffers.Amount.GBP;
 import static com.worldpay.simpleoffers.InMemoryOffersStore.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -19,10 +21,10 @@ public class OfferExists extends OffersContext {
 
     @Before
     public void start() throws IOException {
-        start_application();
         create_offer();
-        //query_offer()
+        query_offer(last_offer_id());
     }
+
 
     @After
     public void stop() {
@@ -31,29 +33,12 @@ public class OfferExists extends OffersContext {
 
     @Test
     public void api_returns_200_OK() {
-        assertThat(create_offer_result.status(), is(equalTo(200)));
+        assertThat(last_query_offers_result.status(), is(equalTo(200)));
     }
 
     @Test
-    public void api_returns_location_for_created_offer() {
-        assertThat(create_offer_result.header("location"), startsWith("/offers/"));
-    }
-
-    @Test
-    public void db_contains_offer_with_matching_description() {
-        assertThat(store.offers, contains(anOffer(withFriendlyDescription("Friendly desc"))));
-    }
-
-    @Test
-    public void db_contains_offer_with_matching_amount() {
-        assertThat(store.offers, contains(anOffer(
-                withValue("10.50"),
-                withCurrency(GBP))));
-    }
-
-    @Test
-    public void db_contains_offer_with_matching_expiry() {
-        assertThat(store.offers, contains(anOffer(withExpiryDate(tomorrow()))));
+    public void api_returns_body_with_description() {
+        assertThat(last_query_offers_result.body(), hasJsonPath("$.friendlyDescription", equalTo("Desc")));
     }
 
 }

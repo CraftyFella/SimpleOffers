@@ -26,12 +26,12 @@ public class HappyPath extends OffersContext {
 
     @Test
     public void api_returns_200_OK() {
-        assertThat(create_offer_result.status(), is(equalTo(200)));
+        assertThat(last_create_offer_result.status(), is(equalTo(200)));
     }
 
     @Test
     public void api_returns_location_for_created_offer() {
-        assertThat(create_offer_result.header("location"), startsWith("/offers/"));
+        assertThat(last_create_offer_result.header("location"), startsWith("/offers/"));
     }
 
     @Test

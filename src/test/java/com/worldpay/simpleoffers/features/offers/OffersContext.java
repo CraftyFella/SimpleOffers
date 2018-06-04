@@ -9,12 +9,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 public class OffersContext {
 
     protected ConfigurableApplicationContext app;
-    protected HttpResult create_offer_result;
-    protected HttpResult query_offers_result;
+    protected HttpResult last_create_offer_result;
+    protected HttpResult last_query_offers_result;
 
     @Autowired
     protected InMemoryOffersStore store;
@@ -25,13 +26,13 @@ public class OffersContext {
         start_application();
     }
 
-    public void start_application() {
+    private void start_application() {
         app = SpringApplication.run(SimpleOffersAppplication.class,"--server.port=" + "8080");
         client = new SimpleOffersHttpClient(8080);
         store = (InMemoryOffersStore)app.getBean("offersStore");
     }
 
-    public Date tomorrow() {
+    protected Date tomorrow() {
         if (tomorrow != null) return tomorrow;
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, 1);
@@ -39,16 +40,21 @@ public class OffersContext {
         return tomorrow;
     }
 
-    public void create_offer() throws IOException {
-        create_offer(new OfferBuilder());
+    protected void create_offer() throws IOException {
+        create_offer(new OfferBuilder().withExpiry(tomorrow()));
     }
 
-    public void create_offer(OfferBuilder builder) throws IOException {
-        create_offer_result = client.createOffer(builder);
+    protected void create_offer(OfferBuilder builder) throws IOException {
+        last_create_offer_result = client.createOffer(builder);
     }
 
-    public void query_offers() throws IOException {
-        query_offers_result = client.queryOffers();
+    protected void query_offer(UUID offerId) throws IOException {
+        last_query_offers_result = client.queryOffer(offerId);
+    }
+
+    protected UUID last_offer_id() {
+        String offerIdFromLocation = last_create_offer_result.header("location").substring("/offer/".length() + 1);
+        return UUID.fromString(offerIdFromLocation);
     }
 
     @After

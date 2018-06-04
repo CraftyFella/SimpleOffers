@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 public class SimpleOffersHttpClient {
 
@@ -32,8 +33,10 @@ public class SimpleOffersHttpClient {
         return new OkHttpResult(response);
     }
 
-    public HttpResult queryOffers() {
-        return null;
+    public HttpResult queryOffer(UUID offerId) throws IOException {
+        Request request = get("/offers/" + offerId);
+        Response response = client.newCall(request).execute();
+        return new OkHttpResult(response);
     }
 
     private Request get(String resource) {

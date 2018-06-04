@@ -1,9 +1,6 @@
 package com.worldpay.simpleoffers.features.offers;
 
-import com.worldpay.simpleoffers.HttpResult;
-import com.worldpay.simpleoffers.InMemoryOffersStore;
-import com.worldpay.simpleoffers.SimpleOffersAppplication;
-import com.worldpay.simpleoffers.SimpleOffersHttpClient;
+import com.worldpay.simpleoffers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -19,8 +16,8 @@ public abstract class OffersContext {
 
     @Autowired
     protected static InMemoryOffersStore store;
-    protected static Date tomorrow;
     protected static SimpleOffersHttpClient client;
+    private static Date tomorrow;
 
     public static void start_application() throws IOException {
         app = SpringApplication.run(SimpleOffersAppplication.class,"--server.port=" + "8080");
@@ -31,7 +28,12 @@ public abstract class OffersContext {
     protected static Date tomorrow() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        return calendar.getTime();
+        tomorrow = calendar.getTime();
+        return tomorrow;
+    }
+
+    protected static void create_offer(OfferBuilder builder) throws IOException {
+        create_offer_result = client.createOffer(builder);
     }
 
     public static void stop_application() {

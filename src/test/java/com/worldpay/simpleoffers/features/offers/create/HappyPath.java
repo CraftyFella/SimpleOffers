@@ -1,6 +1,5 @@
 package com.worldpay.simpleoffers.features.offers.create;
 
-import com.worldpay.simpleoffers.HttpResult;
 import com.worldpay.simpleoffers.OfferBuilder;
 import com.worldpay.simpleoffers.features.offers.OffersContext;
 import org.junit.AfterClass;
@@ -8,7 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Date;
 
 import static com.worldpay.simpleoffers.Amount.GBP;
 import static com.worldpay.simpleoffers.InMemoryOffersStore.*;
@@ -19,20 +17,15 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class HappyPath extends OffersContext {
 
-    private static HttpResult result;
-    private static Date tomorrow;
 
     @BeforeClass
     public static void start() throws IOException {
         start_application();
-        tomorrow = tomorrow();
-
-        result = client.createOffer(
-                        new OfferBuilder()
-                                .withDesc("Friendly desc")
-                                .withAmount("10.50")
-                                .withCurrency("GBP")
-                                .withExpiry(tomorrow));
+        create_offer(new OfferBuilder()
+                        .withDesc("Friendly desc")
+                        .withAmount("10.50")
+                        .withCurrency("GBP")
+                        .withExpiry(tomorrow()));
     }
 
     @AfterClass
@@ -42,7 +35,7 @@ public class HappyPath extends OffersContext {
 
     @Test
     public void api_returns_200_OK() {
-        assertThat(result.status(), is(equalTo(200)));
+        assertThat(create_offer_result.status(), is(equalTo(200)));
     }
 
     @Test
@@ -59,7 +52,7 @@ public class HappyPath extends OffersContext {
 
     @Test
     public void db_contains_offer_with_matching_expiry() {
-        assertThat(store.offers, contains(anOffer(withExpiryDate(tomorrow))));
+        assertThat(store.offers, contains(anOffer(withExpiryDate(tomorrow()))));
     }
 
 }

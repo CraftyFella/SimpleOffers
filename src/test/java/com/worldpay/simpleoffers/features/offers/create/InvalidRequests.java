@@ -2,10 +2,7 @@ package com.worldpay.simpleoffers.features.offers.create;
 
 import com.worldpay.simpleoffers.OfferBuilder;
 import com.worldpay.simpleoffers.features.offers.OffersContext;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -15,18 +12,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class InvalidRequests extends OffersContext {
-
-    private static ConfigurableApplicationContext app;
-
-    @BeforeClass
-    public static void start() throws IOException {
-        start_application();
-    }
-
-    @AfterClass
-    public static void stop() {
-        stop_application();
-    }
 
     @Test
     public void missing_description_returns_400() throws IOException {
